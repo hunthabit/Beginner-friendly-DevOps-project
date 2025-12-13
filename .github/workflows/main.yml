@@ -1,0 +1,43 @@
+name: Deploy Static Content to Pages
+
+# 1. Define when this workflow runs
+on:
+  push:
+    branches:
+      - main  # Run the workflow when code is pushed to the 'main' branch
+
+# Sets permissions needed for the deployment process
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 2. Define the jobs (tasks) to be executed
+jobs:
+  # The name of the job
+  build-and-deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest # The operating system to run the job on
+
+    steps:
+      # Step 1: Check out the repository code
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Step 2: Set up the GitHub Pages environment
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      # Step 3: Upload the static site files (the / folder)
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # Upload entire repository contents (our website)
+          path: './'
+
+      # Step 4: Deploy the files to GitHub Pages
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
