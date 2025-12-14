@@ -9,7 +9,7 @@ on:
 
 env:
   # Set the name of the Docker image (replace 'your-docker-username')
-  DOCKER_IMAGE: ${{ secrets.thehuntone }}/my-app
+  DOCKER_IMAGE: ${{ secrets.DOCKER_USERNAME }} thehuntone/my-app:latest
 
 jobs:
   build-and-push:
